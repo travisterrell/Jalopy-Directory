@@ -67,7 +67,7 @@
             </div>
         </header>
         <main class="mdl-layout__content">
-            <div class="mdl-layout__tab-panel is-active" id="overview">
+            <div class="mdl-layout__tab-panel is-active" id="overview"  data-bind="with: apiVm">
 
                 <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
                     <div class="mdl-card mdl-cell mdl-cell--12-col-desktop mdl-cell--9-col-tablet mdl-cell--6-col-phone">
@@ -76,19 +76,17 @@
                         </div>
                         <div class="mdl-card__supporting-text">
                             Use this form to search for Jalopies to add to our inventory.
-                            @using (Html.BeginForm("Api", "Vehicles", FormMethod.Post))
-                            {
-                                @Html.AntiForgeryToken()
+                            <form data-bind="submit: getModels">
                                 <div class="mdl-textfield mdl-js-textfield">
-                                    <input class="mdl-textfield__input" type="text" id="year" />
+                                    <input class="mdl-textfield__input" type="text" id="year" data-bind="textInput: model.year"/>
                                     <label class="mdl-textfield__label" for="year">Year</label>
                                 </div>
                                 <div class="mdl-textfield mdl-js-textfield">
-                                    <input class="mdl-textfield__input" type="text" id="make" />
+                                    <input class="mdl-textfield__input" type="text" id="make" data-bind="textInput: model.make"/>
                                     <label class="mdl-textfield__label" for="make">Make</label>
                                 </div>
                                 <input type="submit" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" value="Find Jalopies" />
-                            }
+                           </form> 
                         </div>
                     </div>
                 </section>
@@ -104,8 +102,14 @@
                                     <th class="mdl-data-table__cell--non-numeric">@Html.DisplayNameFor(model => model.Year)</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @foreach (var item in Model)
+                            <tbody data-bind="foreach: model">
+                                <tr>
+                                    <td class="mdl-data-table__cell--non-numeric" data-bind="text: id"></td>
+                                    <td class="mdl-data-table__cell--non-numeric" data-bind="text: make"></td>
+                                    <td class="mdl-data-table__cell--non-numeric" data-bind="text: model"></td>
+                                    <td class="mdl-data-table__cell--non-numeric" data-bind="text: year"></td>
+                                </tr>
+                                @*@foreach (var item in Model)
                                 {
                                     <tr>
                                         <td class="mdl-data-table__cell--non-numeric">@Html.DisplayFor(modelItem => item.Id)</td>
@@ -113,7 +117,7 @@
                                         <td class="mdl-data-table__cell--non-numeric" onclick="location.href = '@(Url.Action("Details", "Vehicles", new { Id = item.Id}))'">@Html.DisplayFor(modelItem => item.Model)</td>
                                         <td class="mdl-data-table__cell--non-numeric">@Html.DisplayFor(modelItem => item.Year)</td>
                                     </tr>
-                                }
+                                }*@
                             </tbody>
                         </table>
                     </div>
@@ -386,9 +390,27 @@
 
         var apiVm = (function () {
             var model = ko.mapping.fromJS(@Html.Raw(Json.Serialize(Model)));
+            model.year = ko.observable();
+            model.make = ko.observable();
+
+            var getModels = function() {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Api", "Vehicles")',
+                    data: {
+                        year: model.year,
+                        make: model.make
+                    }
+                }).done(function(data) {
+                    ko.mapping.fromJS(data, model)
+                    //toastr.success(data.message);
+                });
+            };
+
 
             return {
-                model: model
+                model: model,
+                getModels: getModels
             }
         })();
 
@@ -401,7 +423,7 @@
         })();*@
 
         var vehiclesVm = {
-            apiVm: apiVm,
+            apiVm: apiVm
             //inventoryVm: inventoryVm
         };
 

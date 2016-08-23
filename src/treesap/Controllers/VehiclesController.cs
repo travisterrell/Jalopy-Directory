@@ -57,7 +57,7 @@ namespace treesap.Controllers
             var client = new EdmondsClient();
             var models = await client.FindModels(year, make);
 
-            return View(Vehicle.From(models));
+            return Json(models);
         }
 
         // GET: Vehicles/Details/5
