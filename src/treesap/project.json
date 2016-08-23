@@ -1,4 +1,4 @@
-﻿{
+{
   "userSecretsId": "aspnet-treesap-f74f060f-c8d1-41c1-bd25-94782e0f43a1",
 
   "dependencies": {
@@ -40,10 +40,12 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "Microsoft.VisualStudio.Web.CodeGenerators.Mvc":  {
+    "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": {
       "version": "1.0.0-preview2-final",
       "type": "build"
-    }
+    },
+    "Newtonsoft.Json": "9.0.1",
+    "Microsoft.AspNetCore.WebUtilities": "1.0.0"
   },
 
   "tools": {
