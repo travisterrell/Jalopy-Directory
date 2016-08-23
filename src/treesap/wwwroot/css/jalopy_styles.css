@@ -213,7 +213,7 @@ _:-ms-input-placeholder, :root .demo-graph {
 
 
 .full-width {
-    width: calc(100% - 16px);
+    width: 100%;
 }
 
 

@@ -26,7 +26,7 @@ namespace treesap.Controllers
             var client = new EdmondsClient();
             var models = await client.FindModels();
 
-            return View(Vehicle.From(models));
+            return View(new List<Vehicle>());
         }
 
         public async Task<IActionResult> List()
@@ -40,7 +40,7 @@ namespace treesap.Controllers
             var client = new EdmondsClient();
             var models = await client.FindModels();
 
-            return Json(models);
+            return Json(Vehicle.From(models));
         }
 
         public async Task<IActionResult> Api()
@@ -48,7 +48,7 @@ namespace treesap.Controllers
             var client = new EdmondsClient();
             var models = await client.FindModels();
 
-            return View(Vehicle.From(models));
+            return View(new List<Vehicle>());
         }
 
         [HttpPost]
@@ -57,7 +57,7 @@ namespace treesap.Controllers
             var client = new EdmondsClient();
             var models = await client.FindModels(year, make);
 
-            return Json(models);
+            return Json(Vehicle.From(models));
         }
 
         // GET: Vehicles/Details/5
