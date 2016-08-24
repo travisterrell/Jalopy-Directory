@@ -8,16 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using treesap.Data;
 using treesap.Models;
 using treesap.Clients;
+using treesap.Services;
 
 namespace treesap.Controllers
 {
     public class VehiclesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IVehicleService _vehicleService;
 
-        public VehiclesController(ApplicationDbContext context)
+        public VehiclesController(ApplicationDbContext context, IVehicleService vehicleService)
         {
-            _context = context;    
+            _context = context;
+            _vehicleService = vehicleService;
         }
 
         // GET: Vehicles
@@ -31,7 +34,9 @@ namespace treesap.Controllers
 
         public async Task<IActionResult> List()
         {
-            return View(await _context.Vehicle.ToListAsync());
+            var vehicles = await _vehicleService.Find();
+
+            return View(vehicles);
         }
 
         [HttpPost]
