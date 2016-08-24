@@ -27,9 +27,9 @@ namespace treesap.Controllers
         public async Task<IActionResult> Index()
         {
             var client = new EdmondsClient();
-            var models = await client.FindModels();
+            var models = await _vehicleService.Find();
 
-            return View(new List<Vehicle>());
+            return View(models);
         }
 
         public async Task<IActionResult> List()
